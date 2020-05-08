@@ -18,13 +18,14 @@ def get_model_pose_prediction_and_error(RO_se3s):
 	pred_poses_y = np.zeros(len(pred_poses))
 	pred_poses_theta = np.zeros(len(pred_poses))
 
+	for i in range(len(pred_poses)):
+		pred_poses_x[i] = pred_poses[i][0,3]
+		pred_poses_y[i] = pred_poses[i][1,3]
+		pred_poses_theta[i] = np.arccos(pred_poses[i][0,0])
+
 	for i in range(len(dim1_data)):
-	    pred_poses_x[i] = pred_poses[i][0,3]
-	    pred_poses_y[i] = pred_poses[i][1,3]
-	    pred_poses_theta[i] = np.arccos(pred_poses[i][0,0])
-	    
-	    dim1_data[i] = RO_se3s[i+2][0,3] - pred_poses[i][0,3]
-	    dim2_data[i] = RO_se3s[i+2][1,3] - pred_poses[i][1,3]
-	    dim3_data[i] = np.arccos(RO_se3s[i+2][0,0]) - np.arccos(pred_poses[i][0,0])
+		dim1_data[i] = RO_se3s[i+2][0,3] - pred_poses[i][0,3]
+		dim2_data[i] = RO_se3s[i+2][1,3] - pred_poses[i][1,3]
+		dim3_data[i] = np.arccos(RO_se3s[i+2][0,0]) - np.arccos(pred_poses[i][0,0])
 
 	return pred_poses,dim1_data,dim2_data,dim3_data,pred_poses_x,pred_poses_y,pred_poses_theta
